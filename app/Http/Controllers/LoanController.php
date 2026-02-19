@@ -36,4 +36,20 @@ class LoanController extends Controller
         return $loan;
 
     }
+
+    public function update(Request $request, Loan $loanId) {
+        $loan = Loan::find($loanId)->first();
+        $book = Book::find($loan->book_id);
+        if ($book->Disponible === 1) {
+            return response()->json(["error"=>"Libro ya devuelto"], 422);
+        }
+        $book->copias_disponibles = $book->copias_disponibles + 1;
+        if ($book->Disponible === 0) {
+            $book->Disponible = 1;
+        }
+        $book->save();
+        $loan->fecha_hora_prestamo = now();
+        $loan->save();
+        return response()->json(["message"=>"Success"], 200);
+    }
 }
