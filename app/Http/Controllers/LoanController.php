@@ -40,9 +40,9 @@ class LoanController extends Controller
     public function update(Request $request, Loan $loanId) {
         $loan = Loan::find($loanId)->first();
         $book = Book::find($loan->book_id);
-        if ($book->Disponible === 1) {
-            return response()->json(["error"=>"Libro ya devuelto"], 422);
-        }
+        // if ($book->copias_disponibles > ) {
+        //     return response()->json(["error"=>"Libro ya devuelto"], 422);
+        // }
         $book->copias_disponibles = $book->copias_disponibles + 1;
         if ($book->Disponible === 0) {
             $book->Disponible = 1;
